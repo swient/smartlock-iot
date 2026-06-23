@@ -1,6 +1,5 @@
 import os
 import time
-import serial
 import threading
 from typing import Any, Callable, Optional, cast
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM

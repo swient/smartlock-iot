@@ -9,6 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 
 # Generate message files
@@ -19,17 +20,19 @@ set(msg_files
 
 # Generate service files
 set(srv_files
+  "srv/CaptureImage.srv"
   "srv/HardwareCommand.srv"
   "srv/HardwareEvent.srv"
   "srv/ProvisionCrypto.srv"
   "srv/ServerCommand.srv"
+  "srv/StartCamera.srv"
   "srv/StoreMasterKey.srv"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${msg_files}
   ${srv_files}
-  DEPENDENCIES std_msgs builtin_interfaces
+  DEPENDENCIES std_msgs sensor_msgs builtin_interfaces
 )
 
 if(BUILD_TESTING)

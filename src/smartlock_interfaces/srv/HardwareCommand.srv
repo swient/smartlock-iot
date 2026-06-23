@@ -2,7 +2,7 @@
 # Instructs STM32 to perform actions
 
 builtin_interfaces/Time timestamp
-string command_type                     # Type: "UNLOCK", "LOCK", "BUZZ", "RESET", "LED_ON", "LED_OFF"
+string command_type                     # Type: "UNLOCK", "LED_Y"
 ---
 bool success                            # True if command executed successfully
 string message                          # Success or error message

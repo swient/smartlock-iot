@@ -13,37 +13,39 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10smart_lock.proto\x12\nsmart_lock\"\x92\x01\n\x0fSmartLockPacket\x12\x10\n\x08sequence\x18\x01 \x01(\r\x12\x31\n\rstm32_message\x18\x02 \x01(\x0b\x32\x18.smart_lock.Stm32MessageH\x00\x12+\n\npi_message\x18\x03 \x01(\x0b\x32\x15.smart_lock.PiMessageH\x00\x42\r\n\x0bpacket_body\"\x9f\x03\n\x0cStm32Message\x12.\n\tpin_input\x18\x01 \x01(\x0b\x32\x19.smart_lock.PINInputEventH\x00\x12\x34\n\x0crfid_scanned\x18\x02 \x01(\x0b\x32\x1c.smart_lock.RfidScannedEventH\x00\x12>\n\x11rfid_registration\x18\x03 \x01(\x0b\x32!.smart_lock.RfidRegistrationEventH\x00\x12>\n\x11\x66\x61\x63\x65_registration\x18\x04 \x01(\x0b\x32!.smart_lock.FaceRegistrationEventH\x00\x12\x34\n\x0cir_triggered\x18\x05 \x01(\x0b\x32\x1c.smart_lock.IrTriggeredEventH\x00\x12\x34\n\x0csystem_reset\x18\x06 \x01(\x0b\x32\x1c.smart_lock.SystemResetEventH\x00\x12\x35\n\x0fstatus_response\x18\x07 \x01(\x0b\x32\x1a.smart_lock.StatusResponseH\x00\x42\x06\n\x04\x62ody\"\xb4\x01\n\tPiMessage\x12+\n\x06unlock\x18\x01 \x01(\x0b\x32\x19.smart_lock.UnlockCommandH\x00\x12;\n\x0f\x63ontrol_rgb_led\x18\x02 \x01(\x0b\x32 .smart_lock.ControlRgbLedCommandH\x00\x12\x35\n\x0fstatus_response\x18\x03 \x01(\x0b\x32\x1a.smart_lock.StatusResponseH\x00\x42\x06\n\x04\x62ody\"\x1c\n\rPINInputEvent\x12\x0b\n\x03pin\x18\x01 \x01(\t\"\x1f\n\x10RfidScannedEvent\x12\x0b\n\x03uid\x18\x01 \x01(\x0c\"$\n\x15RfidRegistrationEvent\x12\x0b\n\x03uid\x18\x01 \x01(\x0c\"\x17\n\x15\x46\x61\x63\x65RegistrationEvent\"\x12\n\x10IrTriggeredEvent\"\x12\n\x10SystemResetEvent\"\x0f\n\rUnlockCommand\"@\n\x14\x43ontrolRgbLedCommand\x12\x0b\n\x03red\x18\x01 \x01(\x08\x12\r\n\x05green\x18\x02 \x01(\x08\x12\x0c\n\x04\x62lue\x18\x03 \x01(\x08\"I\n\x0eStatusResponse\x12&\n\x06status\x18\x01 \x01(\x0e\x32\x16.smart_lock.StatusType\x12\x0f\n\x07message\x18\x02 \x01(\t*\x89\x01\n\nStatusType\x12\x1b\n\x17STATUS_TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0eSTATUS_TYPE_OK\x10\x01\x12\x16\n\x12STATUS_TYPE_FAILED\x10\x02\x12\x17\n\x13STATUS_TYPE_TIMEOUT\x10\x03\x12\x19\n\x15STATUS_TYPE_CANCELLED\x10\x04\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10smart_lock.proto\x12\nsmart_lock\"\x92\x01\n\x0fSmartLockPacket\x12\x10\n\x08sequence\x18\x01 \x01(\r\x12\x31\n\rstm32_message\x18\x02 \x01(\x0b\x32\x18.smart_lock.Stm32MessageH\x00\x12+\n\npi_message\x18\x03 \x01(\x0b\x32\x15.smart_lock.PiMessageH\x00\x42\r\n\x0bpacket_body\"\xd3\x03\n\x0cStm32Message\x12.\n\tpin_input\x18\x01 \x01(\x0b\x32\x19.smart_lock.PINInputEventH\x00\x12\x32\n\x0bpin_updated\x18\x02 \x01(\x0b\x32\x1b.smart_lock.PINUpdatedEventH\x00\x12\x34\n\x0crfid_scanned\x18\x03 \x01(\x0b\x32\x1c.smart_lock.RfidScannedEventH\x00\x12>\n\x11rfid_registration\x18\x04 \x01(\x0b\x32!.smart_lock.RfidRegistrationEventH\x00\x12>\n\x11\x66\x61\x63\x65_registration\x18\x05 \x01(\x0b\x32!.smart_lock.FaceRegistrationEventH\x00\x12\x34\n\x0cir_triggered\x18\x06 \x01(\x0b\x32\x1c.smart_lock.IrTriggeredEventH\x00\x12\x34\n\x0csystem_reset\x18\x07 \x01(\x0b\x32\x1c.smart_lock.SystemResetEventH\x00\x12\x35\n\x0fstatus_response\x18\x08 \x01(\x0b\x32\x1a.smart_lock.StatusResponseH\x00\x42\x06\n\x04\x62ody\"\xb4\x01\n\tPiMessage\x12+\n\x06unlock\x18\x01 \x01(\x0b\x32\x19.smart_lock.UnlockCommandH\x00\x12;\n\x0f\x63ontrol_rgb_led\x18\x02 \x01(\x0b\x32 .smart_lock.ControlRgbLedCommandH\x00\x12\x35\n\x0fstatus_response\x18\x03 \x01(\x0b\x32\x1a.smart_lock.StatusResponseH\x00\x42\x06\n\x04\x62ody\"\x1c\n\rPINInputEvent\x12\x0b\n\x03pin\x18\x01 \x01(\t\"\x1e\n\x0fPINUpdatedEvent\x12\x0b\n\x03pin\x18\x01 \x01(\t\"\x1f\n\x10RfidScannedEvent\x12\x0b\n\x03uid\x18\x01 \x01(\x0c\"$\n\x15RfidRegistrationEvent\x12\x0b\n\x03uid\x18\x01 \x01(\x0c\"\x17\n\x15\x46\x61\x63\x65RegistrationEvent\"\x12\n\x10IrTriggeredEvent\"\x12\n\x10SystemResetEvent\"\x0f\n\rUnlockCommand\"@\n\x14\x43ontrolRgbLedCommand\x12\x0b\n\x03red\x18\x01 \x01(\x08\x12\r\n\x05green\x18\x02 \x01(\x08\x12\x0c\n\x04\x62lue\x18\x03 \x01(\x08\"I\n\x0eStatusResponse\x12&\n\x06status\x18\x01 \x01(\x0e\x32\x16.smart_lock.StatusType\x12\x0f\n\x07message\x18\x02 \x01(\t*\x89\x01\n\nStatusType\x12\x1b\n\x17STATUS_TYPE_UNSPECIFIED\x10\x00\x12\x12\n\x0eSTATUS_TYPE_OK\x10\x01\x12\x16\n\x12STATUS_TYPE_FAILED\x10\x02\x12\x17\n\x13STATUS_TYPE_TIMEOUT\x10\x03\x12\x19\n\x15STATUS_TYPE_CANCELLED\x10\x04\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'smart_lock_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _STATUSTYPE._serialized_start=1107
-  _STATUSTYPE._serialized_end=1244
+  _STATUSTYPE._serialized_start=1191
+  _STATUSTYPE._serialized_end=1328
   _SMARTLOCKPACKET._serialized_start=33
   _SMARTLOCKPACKET._serialized_end=179
   _STM32MESSAGE._serialized_start=182
-  _STM32MESSAGE._serialized_end=597
-  _PIMESSAGE._serialized_start=600
-  _PIMESSAGE._serialized_end=780
-  _PININPUTEVENT._serialized_start=782
-  _PININPUTEVENT._serialized_end=810
-  _RFIDSCANNEDEVENT._serialized_start=812
-  _RFIDSCANNEDEVENT._serialized_end=843
-  _RFIDREGISTRATIONEVENT._serialized_start=845
-  _RFIDREGISTRATIONEVENT._serialized_end=881
-  _FACEREGISTRATIONEVENT._serialized_start=883
-  _FACEREGISTRATIONEVENT._serialized_end=906
-  _IRTRIGGEREDEVENT._serialized_start=908
-  _IRTRIGGEREDEVENT._serialized_end=926
-  _SYSTEMRESETEVENT._serialized_start=928
-  _SYSTEMRESETEVENT._serialized_end=946
-  _UNLOCKCOMMAND._serialized_start=948
-  _UNLOCKCOMMAND._serialized_end=963
-  _CONTROLRGBLEDCOMMAND._serialized_start=965
-  _CONTROLRGBLEDCOMMAND._serialized_end=1029
-  _STATUSRESPONSE._serialized_start=1031
-  _STATUSRESPONSE._serialized_end=1104
+  _STM32MESSAGE._serialized_end=649
+  _PIMESSAGE._serialized_start=652
+  _PIMESSAGE._serialized_end=832
+  _PININPUTEVENT._serialized_start=834
+  _PININPUTEVENT._serialized_end=862
+  _PINUPDATEDEVENT._serialized_start=864
+  _PINUPDATEDEVENT._serialized_end=894
+  _RFIDSCANNEDEVENT._serialized_start=896
+  _RFIDSCANNEDEVENT._serialized_end=927
+  _RFIDREGISTRATIONEVENT._serialized_start=929
+  _RFIDREGISTRATIONEVENT._serialized_end=965
+  _FACEREGISTRATIONEVENT._serialized_start=967
+  _FACEREGISTRATIONEVENT._serialized_end=990
+  _IRTRIGGEREDEVENT._serialized_start=992
+  _IRTRIGGEREDEVENT._serialized_end=1010
+  _SYSTEMRESETEVENT._serialized_start=1012
+  _SYSTEMRESETEVENT._serialized_end=1030
+  _UNLOCKCOMMAND._serialized_start=1032
+  _UNLOCKCOMMAND._serialized_end=1047
+  _CONTROLRGBLEDCOMMAND._serialized_start=1049
+  _CONTROLRGBLEDCOMMAND._serialized_end=1113
+  _STATUSRESPONSE._serialized_start=1115
+  _STATUSRESPONSE._serialized_end=1188
 # @@protoc_insertion_point(module_scope)

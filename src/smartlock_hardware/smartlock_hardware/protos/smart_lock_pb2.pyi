@@ -87,6 +87,7 @@ class Stm32Message(_message.Message):
     DESCRIPTOR: _descriptor.Descriptor
 
     PIN_INPUT_FIELD_NUMBER: _builtins.int
+    PIN_UPDATED_FIELD_NUMBER: _builtins.int
     RFID_SCANNED_FIELD_NUMBER: _builtins.int
     RFID_REGISTRATION_FIELD_NUMBER: _builtins.int
     FACE_REGISTRATION_FIELD_NUMBER: _builtins.int
@@ -95,6 +96,8 @@ class Stm32Message(_message.Message):
     STATUS_RESPONSE_FIELD_NUMBER: _builtins.int
     @_builtins.property
     def pin_input(self) -> Global___PINInputEvent: ...
+    @_builtins.property
+    def pin_updated(self) -> Global___PINUpdatedEvent: ...
     @_builtins.property
     def rfid_scanned(self) -> Global___RfidScannedEvent: ...
     @_builtins.property
@@ -111,6 +114,7 @@ class Stm32Message(_message.Message):
         self,
         *,
         pin_input: Global___PINInputEvent | None = ...,
+        pin_updated: Global___PINUpdatedEvent | None = ...,
         rfid_scanned: Global___RfidScannedEvent | None = ...,
         rfid_registration: Global___RfidRegistrationEvent | None = ...,
         face_registration: Global___FaceRegistrationEvent | None = ...,
@@ -118,11 +122,11 @@ class Stm32Message(_message.Message):
         system_reset: Global___SystemResetEvent | None = ...,
         status_response: Global___StatusResponse | None = ...,
     ) -> None: ...
-    _HasFieldArgType: _TypeAlias = _typing.Literal["body", b"body", "face_registration", b"face_registration", "ir_triggered", b"ir_triggered", "pin_input", b"pin_input", "rfid_registration", b"rfid_registration", "rfid_scanned", b"rfid_scanned", "status_response", b"status_response", "system_reset", b"system_reset"]  # noqa: Y015
+    _HasFieldArgType: _TypeAlias = _typing.Literal["body", b"body", "face_registration", b"face_registration", "ir_triggered", b"ir_triggered", "pin_input", b"pin_input", "pin_updated", b"pin_updated", "rfid_registration", b"rfid_registration", "rfid_scanned", b"rfid_scanned", "status_response", b"status_response", "system_reset", b"system_reset"]  # noqa: Y015
     def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
-    _ClearFieldArgType: _TypeAlias = _typing.Literal["body", b"body", "face_registration", b"face_registration", "ir_triggered", b"ir_triggered", "pin_input", b"pin_input", "rfid_registration", b"rfid_registration", "rfid_scanned", b"rfid_scanned", "status_response", b"status_response", "system_reset", b"system_reset"]  # noqa: Y015
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["body", b"body", "face_registration", b"face_registration", "ir_triggered", b"ir_triggered", "pin_input", b"pin_input", "pin_updated", b"pin_updated", "rfid_registration", b"rfid_registration", "rfid_scanned", b"rfid_scanned", "status_response", b"status_response", "system_reset", b"system_reset"]  # noqa: Y015
     def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
-    _WhichOneofReturnType_body: _TypeAlias = _typing.Literal["pin_input", "rfid_scanned", "rfid_registration", "face_registration", "ir_triggered", "system_reset", "status_response"]  # noqa: Y015
+    _WhichOneofReturnType_body: _TypeAlias = _typing.Literal["pin_input", "pin_updated", "rfid_scanned", "rfid_registration", "face_registration", "ir_triggered", "system_reset", "status_response"]  # noqa: Y015
     _WhichOneofArgType_body: _TypeAlias = _typing.Literal["body", b"body"]  # noqa: Y015
     def WhichOneof(self, oneof_group: _WhichOneofArgType_body) -> _WhichOneofReturnType_body | None: ...
 
@@ -181,6 +185,25 @@ class PINInputEvent(_message.Message):
     def WhichOneof(self, oneof_group: _Never) -> None: ...
 
 Global___PINInputEvent: _TypeAlias = PINInputEvent  # noqa: Y015
+
+@_typing.final
+class PINUpdatedEvent(_message.Message):
+    DESCRIPTOR: _descriptor.Descriptor
+
+    PIN_FIELD_NUMBER: _builtins.int
+    pin: _builtins.str
+    def __init__(
+        self,
+        *,
+        pin: _builtins.str = ...,
+    ) -> None: ...
+    _HasFieldArgType: _TypeAlias = _Never  # noqa: Y015
+    def HasField(self, field_name: _HasFieldArgType) -> _builtins.bool: ...
+    _ClearFieldArgType: _TypeAlias = _typing.Literal["pin", b"pin"]  # noqa: Y015
+    def ClearField(self, field_name: _ClearFieldArgType) -> None: ...
+    def WhichOneof(self, oneof_group: _Never) -> None: ...
+
+Global___PINUpdatedEvent: _TypeAlias = PINUpdatedEvent  # noqa: Y015
 
 @_typing.final
 class RfidScannedEvent(_message.Message):

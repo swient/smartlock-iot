@@ -13,8 +13,6 @@ from dotenv import load_dotenv
 
 import rclpy
 from rclpy.node import Node
-from rclpy.executors import MultiThreadedExecutor
-from rclpy.callback_groups import ReentrantCallbackGroup
 from ament_index_python.packages import get_package_share_directory
 
 from smartlock_hardware.protos import smart_lock_pb2
@@ -46,19 +44,15 @@ class HardwareNode(Node):
             logger=self.get_logger(),
         )
 
-        self.callback_group = ReentrantCallbackGroup()
-
         # Create Service
         self.hardware_command_srv = self.create_service(
             HardwareCommand,
             "/smartlock/hardware_command",
             self._hardware_command_callback,
-            callback_group=self.callback_group,
         )
         self.hardware_event_client = self.create_client(
             HardwareEvent,
             "/smartlock/hardware_event",
-            callback_group=self.callback_group,
         )
 
         self.get_logger().info("Hardware node initialized")
@@ -119,11 +113,17 @@ class HardwareNode(Node):
         # Prepare Event Request for Brain Node
         req = HardwareEvent.Request()
         payload = {}
+        should_ack_status = True
 
         if event_type == "pin_input":
             req.event_type = "PIN_ENTERED"
             payload["pin"] = stm32_msg.pin_input.pin
             self.get_logger().info(f"Pin received: {payload['pin']}")
+
+        elif event_type == "pin_updated":
+            req.event_type = "PIN_UPDATED"
+            payload["pin"] = stm32_msg.pin_updated.pin
+            self.get_logger().info(f"Pin updated: {payload['pin']}")
 
         elif event_type == "rfid_scanned":
             req.event_type = "RFID_SCANNED"
@@ -141,6 +141,7 @@ class HardwareNode(Node):
 
         elif event_type == "ir_triggered":
             req.event_type = "IR_TRIGGERED"
+            should_ack_status = False
             self.get_logger().info("IR Event Triggered")
 
         elif event_type == "system_reset":
@@ -158,21 +159,26 @@ class HardwareNode(Node):
 
         if self.hardware_event_client.wait_for_service(timeout_sec=1.0):
             future = self.hardware_event_client.call_async(req)
-            future.add_done_callback(partial(self._hardware_event_done_callback, stm32_seq=seq))
+            future.add_done_callback(
+                partial(self._hardware_event_done_callback, stm32_seq=seq, should_ack_status=should_ack_status)
+            )
         else:
             status = smart_lock_pb2.STATUS_TYPE_FAILED
             message = "Service Unavailable"
             self.stm32_comm.send_pi_status(seq, status, message)
             self.get_logger().error("Brain node HardwareEvent service unavailable!")
 
-    def _hardware_event_done_callback(self, future, stm32_seq: int) -> None:
+    def _hardware_event_done_callback(self, future, stm32_seq: int, should_ack_status: bool) -> None:
         """Handle response from brain node and optionally notify STM32."""
         try:
             response = future.result()
 
             # Send an ACK back to STM32
             if response.success:
-                status = smart_lock_pb2.STATUS_TYPE_OK
+                if should_ack_status:
+                    status = smart_lock_pb2.STATUS_TYPE_OK
+                else:
+                    status = smart_lock_pb2.STATUS_TYPE_UNSPECIFIED
             else:
                 status = smart_lock_pb2.STATUS_TYPE_FAILED
 
@@ -196,10 +202,8 @@ def main(args=None):
     rclpy.init(args=args)
     node = HardwareNode()
     node.on_startup()
-    executor = MultiThreadedExecutor()
-    executor.add_node(node)
     try:
-        executor.spin()
+        rclpy.spin(node)
     except KeyboardInterrupt:
         pass
     finally:
