@@ -7,9 +7,30 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+
+# Generate message files
+set(msg_files
+  "msg/AuthenticationResult.msg"
+  "msg/FaceVector.msg"
+)
+
+# Generate service files
+set(srv_files
+  "srv/HardwareCommand.srv"
+  "srv/HardwareEvent.srv"
+  "srv/ProvisionCrypto.srv"
+  "srv/ServerCommand.srv"
+  "srv/StoreMasterKey.srv"
+)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  ${msg_files}
+  ${srv_files}
+  DEPENDENCIES std_msgs builtin_interfaces
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

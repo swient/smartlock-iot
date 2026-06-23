@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package smart_lock;
+
+enum StatusType {
+    STATUS_TYPE_UNSPECIFIED    = 0; // 未指定
+    STATUS_TYPE_OK             = 1; // 成功
+    STATUS_TYPE_FAILED         = 2; // 失敗
+    STATUS_TYPE_TIMEOUT        = 3; // 超時
+    STATUS_TYPE_CANCELLED      = 4; // 取消或拒絕
+}
+
+message SmartLockPacket {
+    uint32 sequence = 1;
+
+    oneof packet_body {
+        Stm32Message stm32_message = 2;
+        PiMessage pi_message       = 3;
+    }
+}
+
+// ============================================================================
+// 角色專屬包裹訊息
+// ============================================================================
+
+message Stm32Message {
+    oneof body {
+        PINInputEvent                   pin_input                       = 1;
+        RfidScannedEvent                rfid_scanned                    = 2;
+        RfidRegistrationEvent           rfid_registration               = 3;
+        FaceRegistrationEvent           face_registration               = 4;
+        IrTriggeredEvent                ir_triggered                    = 5;
+        SystemResetEvent                system_reset                    = 6;
+
+        StatusResponse                 status_response                  = 7;
+    }
+}
+
+message PiMessage {
+    oneof body {
+        UnlockCommand                   unlock                          = 1;
+        ControlRgbLedCommand            control_rgb_led                 = 2;
+
+        StatusResponse                  status_response                 = 3;
+    }
+}
+
+// ============================================================================
+// STM32 事件載荷 (Events)
+// ============================================================================
+
+message PINInputEvent {
+    string pin = 1;
+}
+
+message RfidScannedEvent {
+    bytes uid = 1;
+}
+
+message RfidRegistrationEvent {
+    bytes uid = 1;
+}
+
+message FaceRegistrationEvent {}
+
+message IrTriggeredEvent {}
+
+message SystemResetEvent {}
+
+// ============================================================================
+// 樹莓派主動指令 (Commands)
+// ============================================================================
+
+message UnlockCommand {}
+
+message ControlRgbLedCommand {
+    bool red   = 1;
+    bool green = 2;
+    bool blue  = 3;
+}
+
+// ============================================================================
+// 雙向回應載荷 (Responses)
+// ============================================================================
+
+message StatusResponse {
+    StatusType status = 1; 
+    string message    = 2; 
+}

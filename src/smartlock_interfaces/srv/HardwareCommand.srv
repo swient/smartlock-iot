@@ -1,0 +1,8 @@
+# Hardware control command from brain
+# Instructs STM32 to perform actions
+
+builtin_interfaces/Time timestamp
+string command_type                     # Type: "UNLOCK", "LOCK", "BUZZ", "RESET", "LED_ON", "LED_OFF"
+---
+bool success                            # True if command executed successfully
+string message                          # Success or error message

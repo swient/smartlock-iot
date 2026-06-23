@@ -1,0 +1,5 @@
+uint8[32] binding_key
+uint8[] master_key
+---
+bool success             # True if binding successful
+string message           # Success or error message

@@ -1,0 +1,8 @@
+# Hardware event report to brain
+
+builtin_interfaces/Time timestamp
+string event_type
+string payload
+---
+bool success             # True if event processed successfully
+string message           # Success or error message
