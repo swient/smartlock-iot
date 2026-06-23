@@ -8,7 +8,6 @@ This ROS 2 node manages:
 """
 
 import os
-import time
 import json
 import asyncio
 import threading
@@ -161,7 +160,7 @@ class BrainNode(Node):
                 response.message = "PIN Updated"
             else:
                 response.success = False
-                response.message = "Invalid PIN Data"
+                response.message = "Invalid PIN"
 
         elif request.event_type == "RFID_SCANNED":
             scanned_id = payload_data.get("rfid_id", "")
@@ -177,20 +176,20 @@ class BrainNode(Node):
 
         elif request.event_type == "RFID_REGISTERED":
             scanned_id = payload_data.get("rfid_id", "")
-            result = self.auth_manager.register_rfid_uid(scanned_id)
-            if result:
+            success, message = self.auth_manager.register_rfid_uid(scanned_id)
+            if success:
                 self._publish_auth_result(True, "RFID_REGISTERED", 1.0)
                 response.success = True
-                response.message = "RFID Registered"
+                response.message = message
             else:
                 response.success = False
-                response.message = "Invalid RFID Data"
+                response.message = message
 
         elif request.event_type == "FACE_REGISTERED":
             with self.face_lock:
                 if self.is_registering_face:
                     response.success = False
-                    response.message = "Already in Reg"
+                    response.message = "Already Active"
                     return response
 
                 success = self._send_start_camera()
@@ -204,10 +203,10 @@ class BrainNode(Node):
                     self.face_reg_timer.start()
 
                     response.success = True
-                    response.message = "FACE start Reg"
+                    response.message = "Face Registering"
                 else:
                     response.success = False
-                    response.message = "Start camera fail"
+                    response.message = "Camera Error"
 
         elif request.event_type == "IR_TRIGGERED":
             success = self._send_start_camera()
@@ -219,7 +218,7 @@ class BrainNode(Node):
                 response.message = "Camera Started"
             else:
                 response.success = False
-                response.message = "Start camera fail"
+                response.message = "Camera Error"
 
         elif request.event_type == "RESET_TRIGGERED":
             initial_pin = self._initiate_reset_mode()
@@ -338,18 +337,6 @@ class BrainNode(Node):
                 if response and response.success:
                     result_msg.image = response.image
 
-                debug_dir = self.base_dir / "debug_images"
-                debug_dir.mkdir(parents=True, exist_ok=True)
-                timestamp_str = time.strftime("%Y%m%d-%H%M%S")
-                image_filename = debug_dir / f"{auth_type}_{timestamp_str}.jpg"
-                img_data = response.image.data
-                height = response.image.height
-                width = response.image.width
-                cv_img = np.frombuffer(img_data, dtype=np.uint8).reshape((height, width, 3))
-                import cv2
-
-                cv2.imwrite(str(image_filename), cv_img)
-                self.get_logger().info(f"Debug image saved to: {image_filename}")
             except Exception as e:
                 self.get_logger().error(f"Failed to capture image for auth result: {e}")
 
@@ -439,8 +426,12 @@ class BrainNode(Node):
                 )
             )
         finally:
-            self.ble_loop.close()
-            self.ble_loop = None
+            if self.ble_loop is not None:
+                try:
+                    self.ble_loop.close()
+                    self.ble_loop = None
+                except Exception as e:
+                    self.get_logger().error(f"Error occurred while closing BLE loop: {e}")
 
     def on_startup(self) -> None:
         """Called when node starts up."""

@@ -123,23 +123,23 @@ class AuthManager:
 
         return True
 
-    def register_rfid_uid(self, rfid_uid: str) -> bool:
+    def register_rfid_uid(self, rfid_uid: str) -> Tuple[bool, str]:
         """Register new RFID UID to database.
 
         Args:
             rfid_uid: RFID UID value to register.
 
         Returns:
-            True if registered successfully, False if it already exists.
+            Tuple of (success: bool, message: str).
         """
         if rfid_uid in self.rfid_uids:
             self.logger.warning(f"RFID UID {rfid_uid} already exists")
-            return False
+            return False, "Duplicate RFID"
 
         self.rfid_uids.add(rfid_uid)
         self._save_database()
         self.logger.info(f"Registered RFID UID: {rfid_uid}")
-        return True
+        return True, "RFID Registered"
 
     def delete_rfid_uid(self, rfid_uid: str) -> bool:
         """Delete RFID UID from database.
