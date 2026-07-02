@@ -148,6 +148,7 @@ class BrainNode(Node):
                 response.success = True
                 response.message = "PIN Verified"
             else:
+                self._publish_auth_result(False, "PIN", 0.0)
                 response.success = False
                 response.message = "Invalid PIN"
 
@@ -159,6 +160,7 @@ class BrainNode(Node):
                 response.success = True
                 response.message = "PIN Updated"
             else:
+                self._publish_auth_result(False, "PIN_UPDATED", 0.0)
                 response.success = False
                 response.message = "Invalid PIN"
 
@@ -171,6 +173,7 @@ class BrainNode(Node):
                 response.success = True
                 response.message = "RFID Verified"
             else:
+                self._publish_auth_result(False, "RFID", 0.0)
                 response.success = False
                 response.message = "Invalid RFID"
 
@@ -182,6 +185,7 @@ class BrainNode(Node):
                 response.success = True
                 response.message = message
             else:
+                self._publish_auth_result(False, "RFID_REGISTERED", 0.0)
                 response.success = False
                 response.message = message
 
@@ -205,6 +209,7 @@ class BrainNode(Node):
                     response.success = True
                     response.message = "Face Registering"
                 else:
+                    self._publish_auth_result(False, "FACE_REGISTERED", 0.0)
                     response.success = False
                     response.message = "Camera Error"
 
@@ -341,7 +346,7 @@ class BrainNode(Node):
                 self.get_logger().error(f"Failed to capture image for auth result: {e}")
 
             self.auth_result_pub.publish(result_msg)
-            self.get_logger().info(f"{auth_type} authentication successful")
+            self.get_logger().info(f"{auth_type} authentication {'successful' if authenticated else 'failed'}")
 
         future.add_done_callback(_image_captured_done_callback)
 

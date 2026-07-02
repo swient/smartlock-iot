@@ -1,5 +1,5 @@
 string command_type
-string json_parameters
+string payload
 ---
 bool success
 string message
